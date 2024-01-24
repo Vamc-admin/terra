@@ -11,11 +11,13 @@ cidr_block =  "10.0.0.0/16"               # Provide the cidr_block of virtual pr
 }
 resource "aws_subnet" "public" {       # provide the name of your subnet
 vpc_id = aws_vpc.my_vpc.id                 
-cidr_block = "10.0.0.0/24"                     # Provide the desired cidr_block of the subnet
+cidr_block = "10.0.0.0/24" 
+availability_zone = "us-east-1a"                    # Provide the desired cidr_block of the subnet
 }
 resource "aws_subnet" "private" {         # Configure the subnet 
 vpc_id = aws_vpc.my_vpc.id             # Configure vpc with subnet
 cidr_block = "10.0.1.0/24"
+availability_zone = "us-east-1a"
 }
 resource "aws_route_table" "public_route" {       # Configure the route table with default VPC" 
 vpc_id = aws_vpc.my_vpc.id      
@@ -106,7 +108,7 @@ resource "aws_ebs_volume" "my_volume" {
   type              = "gp2"  # EBS volume type
 }  
 resource "aws_volume_attachment" "attach" {
-  volume_id          = aws_volume.my_volume.id
+  volume_id          = aws_ebs_volume.my_volume.id
   instance_id        = aws_instance.web.id
   device_name        = "/dev/sdf"  # Change this to the desired device name on the instance
 }
