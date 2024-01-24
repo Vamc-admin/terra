@@ -47,7 +47,7 @@ resource "aws_eip_association" "eip_assoc" {
 resource "aws_nat_gateway" "my_nat" {
   allocation_id = aws_eip.lb.id
   subnet_id     = aws_subnet.public.id
-}  
+}
 resource "aws_instance" "web" {     
 ami = "ami-0c7217cdde317cfec"           # AMI of the instance
 instance_type = "t2.micro"              # Provide the instance type for the instance
