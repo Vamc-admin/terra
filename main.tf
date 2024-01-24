@@ -36,10 +36,6 @@ subnet_id = aws_subnet.private.id
 resource "aws_internet_gateway" "my_igw" {       # Configure the Internet Gateway with the VPC
 vpc_id = aws_vpc.my_vpc.id
 }
-resource "aws_internet_gateway_attachment" "igw_vpc" {   # Attach the Internet Gateway with the VPC
-internet_gateway_id = aws_internet_gateway.my_igw.id
-vpc_id = aws_vpc.my_vpc.id
-}
 resource "aws_eip" "lb" {
   instance = aws_instance.private_instance.id
   domain   = "vpc"
@@ -52,14 +48,9 @@ resource "aws_nat_gateway" "my_nat" {
   allocation_id = aws_eip.lb.id
   subnet_id     = aws_subnet.public.id
 }  
-resource "aws_key_pair" "ubuntu" {          # Create the key_pair for the instance
-public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuD6kRS1yot31C26Szji/pOzvIrBAHSlgfaOzH6MLb/7vaE/DelljYCJbhoKd5g6oDXztlS1a8TD0I61MlYXtl98M3pfSOyIcpo0bqDeAwNIIE/O0MFRX0giv7T93Iz233nQbrrG1itU2z2041sPqeCXXCuAez7w5ablsUOCKGueeUKCNkNPFASWqxB9E/7EIKXMAGrutxlNjthmctYarwM0+U/dOEb6HYfdM5eAQkbBCxHqizlZoUys3kgjRS/ASyES/V76w9m2kEkGhlTCyRvKFiHVZWmkAW6Q4DyElaNTfENNi3uSmIeBLbHljf4n3UzvpWL6iTtPNjNU0H+F01 vamshi krishna@LAPTOP-OAF5T10Q"
-key_name = "ubuntu_key"
-}
 resource "aws_instance" "web" {     
 ami = "ami-0c7217cdde317cfec"           # AMI of the instance
 instance_type = "t2.micro"              # Provide the instance type for the instance
-key_name = "ubuntu_key"                 # Provide the name of the keypair for the instance
 subnet_id = aws_subnet.public.id      # Associate the subnet for the instance
 availability_zone = "us-east-1a"
 vpc_security_group_ids = [aws_security_group.my_sg.id]
@@ -80,7 +71,7 @@ vpc_id = aws_vpc.my_vpc.id
  ingress {
     from_port   = 22
     to_port     = 22
-    protocol    = "ssh"
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from any IP address
   }
    ingress {
