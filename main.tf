@@ -40,10 +40,6 @@ resource "aws_eip" "lb" {
   instance = aws_instance.private_instance.id
   domain   = "vpc"
 }
-resource "aws_eip_association" "eip_assoc" {
-  instance_id   = aws_instance.private_instance.id
-  allocation_id = aws_eip.lb.id
-}
 resource "aws_nat_gateway" "my_nat" {
   allocation_id = aws_eip.lb.id
   subnet_id     = aws_subnet.public.id
