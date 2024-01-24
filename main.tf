@@ -49,6 +49,7 @@ ami = "ami-0c7217cdde317cfec"           # AMI of the instance
 instance_type = "t2.micro"              # Provide the instance type for the instance
 subnet_id = aws_subnet.public.id      # Associate the subnet for the instance
 availability_zone = "us-east-1a"
+associate_public_ip_address = "true"
 vpc_security_group_ids = [aws_security_group.my_sg.id]
 }
 resource "aws_instance" "private_instance" {     
@@ -57,6 +58,7 @@ instance_type = "t2.medium"              # Provide the instance type for the ins
 key_name = "ubuntu_key"                 # Provide the name of the keypair for the instance
 subnet_id = aws_subnet.private.id      # Associate the subnet for the instance
 availability_zone = "us-east-1a"
+associate_public_ip_address = "true"
 vpc_security_group_ids = [aws_security_group.my_sg.id]
 }
 resource "aws_security_group" "my_sg" {
